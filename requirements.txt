@@ -5,3 +5,5 @@ plotly
 python-dotenv
 requests
 tweepy
+fastapi
+pydantic
