@@ -198,11 +198,12 @@ def main(hightlightText):
 
     if donations:
         st.header("Donation Channels")
+        st.write("အလှူခံများ၊ အောက်စီဂျင်၊ စက်ပစ္စည်း၊ ကယ်ဆယ်ရေး နဲ့ နိုင်ငံတကာအလှူခံများကို တတ်နိုင်သမျှတစ်နေရာထဲတွင်စုစည်းပေးထားပါတယ်။ Call button ကိုနှိပ်ရင် ဖုန်းခေါ်ပြီး Donate Now ကိုနှိပ်လျှင် Official Website များဆီသွားမှာ ဖြစ်ပါတယ်။ ကျွန်တော်အခု အလှူခံမကောက်ပါ။ တိုက်ရိုက်လှူချင်သူများအတွက်အဆင်ပြေအောင်စုစည်းပေးထားတာပါခဗျ။ အကောင်းဆုံးကြိုးစားကြရအောင် 💪🏻")
         display_donations(donations)
 
     st.markdown("""
         <div class="footer">
-            Crisis Monitoring Interface • Developed by <a href="https://github.com/rei-kun01">Rei-kun </a>
+            Crisis Monitoring Interface • Developed by <a href="https://github.com/rei-kun01">Rei-kun </a> by ET.Verdict!
         </div>
     """, unsafe_allow_html=True)
 
