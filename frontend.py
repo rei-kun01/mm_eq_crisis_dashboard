@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-BACKEND_URL = "http://localhost:8000"
+BACKEND_URL = "https://mm-eq-crisis-dashboard-backend-c017f9c9a991.herokuapp.com"
 
 # Custom CSS
 st.markdown("""
