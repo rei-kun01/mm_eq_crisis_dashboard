@@ -43,7 +43,7 @@ st.markdown("""
     }
     
     .rescue-btn {
-        background-color: #dc2626 !important;  # Different color for rescue
+        background-color: #2eb82e !important;  # Different color for rescue
         color: white !important;
     }
     
@@ -66,7 +66,7 @@ st.markdown("""
             
     /* Location tags */
     .location-tag {
-        background-color: #2563eb;
+        background-color: #cc8033;
         color: white;
         padding: 2px 8px;
         border-radius: 4px;
@@ -172,7 +172,7 @@ def display_donations(donations):
         local_links = [
             d for d in donations if d['category'].lower() == 'local']
         for link in local_links:
-            st.markdown(render_card(link, "local-btn"),
+            st.markdown(render_card(link, "international-btn"),
                         unsafe_allow_html=True)
 
     with tab4:
