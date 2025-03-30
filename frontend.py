@@ -12,7 +12,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
 BACKEND_URL = "https://mm-eq-crisis-dashboard-backend-c017f9c9a991.herokuapp.com"
 
 # LOCAL_BACKEND_URL = "http://127.0.0.1:8000"
@@ -192,13 +191,15 @@ def main(hightlightText):
     if crisis_data:
         display_metrics(crisis_data)
         st.caption(
-            f"Last updated: {datetime.fromisoformat(crisis_data['last_updated']).strftime('%Y-%m-%d %H:%M')} UTC | Source: {crisis_data['source']}")
+            f"Last updated: {datetime.fromisoformat(crisis_data['last_updated_metrics']).strftime('%Y-%m-%d %H:%M')} UTC | Source: {crisis_data['source']}")
 
     st.markdown("---")
 
     if donations:
         st.header("Donation Channels")
-        st.write("အလှူခံများ၊ အောက်စီဂျင်၊ စက်ပစ္စည်း၊ ကယ်ဆယ်ရေး နဲ့ နိုင်ငံတကာအလှူခံများကို တတ်နိုင်သမျှတစ်နေရာထဲတွင်စုစည်းပေးထားပါတယ်။ Call button ကိုနှိပ်ရင် ဖုန်းခေါ်ပြီး Donate Now ကိုနှိပ်လျှင် Official Website များဆီသွားမှာ ဖြစ်ပါတယ်။ ကျွန်တော်အခု အလှူခံမကောက်ပါ။ တိုက်ရိုက်လှူချင်သူများအတွက်အဆင်ပြေအောင်စုစည်းပေးထားတာပါခဗျ။ အကောင်းဆုံးကြိုးစားကြရအောင် 💪🏻")
+        st.write("အလှူခံများ၊ အောက်စီဂျင်၊ စက်ပစ္စည်း၊ ကယ်ဆယ်ရေး နဲ့ နိုင်ငံတကာအလှူခံများကို တတ်နိုင်သမျှ Facebook ကနေတစ်နေရာထဲတွင်စုစည်းပေးထားပါတယ်။ Call button ကိုနှိပ်ရင် ဖုန်းခေါ်ပြီး Donate Now ကိုနှိပ်လျှင် Official Website များဆီသွားမှာ ဖြစ်ပါတယ်။ ကျွန်တော်အခု အလှူခံမကောက်ပါ။ တိုက်ရိုက်လှူချင်သူများအတွက်အဆင်ပြေအောင်စုစည်းပေးထားတာပါခဗျ။ အကောင်းဆုံးကြိုးစားကြရအောင် 💪🏻")
+        st.caption(
+            f"Last updated for Contact Information: {datetime.fromisoformat(crisis_data['last_updated_info']).strftime('%Y-%m-%d %H:%M')} UTC ")
         display_donations(donations)
 
     st.markdown("""
