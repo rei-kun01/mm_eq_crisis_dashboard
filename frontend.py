@@ -14,6 +14,8 @@ st.set_page_config(
 
 BACKEND_URL = "https://mm-eq-crisis-dashboard-backend-c017f9c9a991.herokuapp.com"
 
+# LOCAL_BACKEND_URL = "http://127.0.0.1:8000"
+
 # Custom CSS
 st.markdown("""
     <style>
@@ -114,8 +116,9 @@ def display_metrics(crisis_data):
 
 
 def display_donations(donations):
-    tab1, tab2, tab3 = st.tabs(
-        ["Rescue Services", "Local Initiatives", "International Aid"])  # Renamed tab
+    tab1, tab2, tab3, tab4 = st.tabs(
+        # Renamed tab
+        ["Rescue Services", "Local Initiatives", "International Aid", "Machineary Aid"])
 
     def render_card(link, btn_class, is_call=False):
         # Generate location tags HTML
@@ -162,6 +165,13 @@ def display_donations(donations):
                       == 'international']
         for link in intl_links:
             st.markdown(render_card(link, "international-btn"),
+                        unsafe_allow_html=True)
+
+    with tab4:
+        intl_links = [d for d in donations if d['category'].lower()
+                      == 'machinery']
+        for link in intl_links:
+            st.markdown(render_card(link, "rescue-btn", is_call=True),
                         unsafe_allow_html=True)
 
 

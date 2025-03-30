@@ -5,6 +5,7 @@ dashboard-backend
 
 #files
 .DS_Store
+data.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
