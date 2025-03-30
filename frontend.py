@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 from datetime import datetime
 from io import StringIO
+from utils.utils import scrolling_banner
 
 # Configure page settings
 st.set_page_config(
@@ -50,6 +51,14 @@ st.markdown("""
     /* Verification badge */
     .verified-badge {
         background-color: #16a34a;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+    
+    .not-verified-badge {
+        background-color: #0066ff;
         color: white;
         padding: 2px 8px;
         border-radius: 4px;
@@ -118,7 +127,7 @@ def display_metrics(crisis_data):
 def display_donations(donations):
     tab1, tab2, tab3, tab4 = st.tabs(
         # Renamed tab
-        ["Rescue Services", "Local Initiatives", "International Aid", "Machineary Aid"])
+        ["Rescue Services - ကယ်ဆယ်ရေး", "Machineary Aid - စက်ယန္တရား", "Local Donations - ပြည်တွင်းအလှူခံများ", "International Donations - ပြည်ပ/နိုင်ငံတကာ/အလှူခံများ"])
 
     def render_card(link, btn_class, is_call=False):
         # Generate location tags HTML
@@ -135,8 +144,8 @@ def display_donations(donations):
         return f"""
 <div style="padding: 15px; margin: 10px 0; border-radius: 8px; background-color: var(--secondary-background-color)">
     <div style="display: flex; justify-content: space-between; align-items: center">
-        <h4>{link['name']}</h4>
-        {'<span class="verified-badge">Verified</span>' if link['verified'] else ''}
+        <h5>{link['name']}</h5>
+        {'<span class="verified-badge">Verified</span>' if link['verified'] else '<span class="not-verified-badge">Verification Needed</span>'}
     </div>
     {locations_html}
     <p style="color: var(--text-color); margin: 10px 0;">{link.get('description', '')}</p>
@@ -154,29 +163,29 @@ def display_donations(donations):
                         unsafe_allow_html=True)
 
     with tab2:
-        local_links = [
-            d for d in donations if d['category'].lower() == 'local']
-        for link in local_links:
-            st.markdown(render_card(link, "local-btn"),
-                        unsafe_allow_html=True)
-
-    with tab3:
-        intl_links = [d for d in donations if d['category'].lower()
-                      == 'international']
-        for link in intl_links:
-            st.markdown(render_card(link, "international-btn"),
-                        unsafe_allow_html=True)
-
-    with tab4:
         intl_links = [d for d in donations if d['category'].lower()
                       == 'machinery']
         for link in intl_links:
             st.markdown(render_card(link, "rescue-btn", is_call=True),
                         unsafe_allow_html=True)
 
+    with tab3:
+        local_links = [
+            d for d in donations if d['category'].lower() == 'local']
+        for link in local_links:
+            st.markdown(render_card(link, "local-btn"),
+                        unsafe_allow_html=True)
 
-def main():
+    with tab4:
+        intl_links = [d for d in donations if d['category'].lower()
+                      == 'international']
+        for link in intl_links:
+            st.markdown(render_card(link, "international-btn"),
+                        unsafe_allow_html=True)
 
+
+def main(hightlightText):
+    scrolling_banner(hightlightText)
     st.title("Myanmar Crisis Relief Dashboard")
     crisis_data, donations = fetch_data()
 
@@ -193,10 +202,13 @@ def main():
 
     st.markdown("""
         <div class="footer">
-            Crisis Monitoring Interface • Developed by <a href="#">Rei-kun </a>
+            Crisis Monitoring Interface • Developed by <a href="https://github.com/rei-kun01">Rei-kun </a>
         </div>
     """, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
-    main()
+    hightlightText = """
+            We’re updating the data as quickly as possible! Please be patient—our dedicated solo developer is working hard to make it happen. 🚀 Volunteer wanted!
+            """
+    main(hightlightText)
