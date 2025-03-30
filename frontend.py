@@ -29,6 +29,15 @@ st.markdown("""
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     
+    /* Dropdown styling */
+    .stSelectbox label {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.5rem;
+    }
+    .stSelectbox div[data-baseweb="select"] {
+        margin-bottom: 1.5rem;
+    }
+    
     /* Donation buttons */
     .donate-btn {
         padding: 8px 20px !important;
@@ -124,9 +133,10 @@ def display_metrics(crisis_data):
 
 
 def display_donations(donations):
+
     tab1, tab2, tab3, tab4 = st.tabs(
         # Renamed tab
-        ["Rescue Services - ကယ်ဆယ်ရေး", "Machineary Aid - စက်ယန္တရား", "Local Donations - ပြည်တွင်းအလှူခံများ", "International Donations - ပြည်ပ/နိုင်ငံတကာ/အလှူခံများ"])
+        ["Rescuse - ကယ်ဆယ်ရေးအဖွဲ့", "Volunteer - ကယ်ဆယ်ရေး-တစ်ဦးချင်း", "Machineary Aid-စက်ယန္တရား", "Donations - ပြည်ပပြည်တွင်းအလှူခံများ"])
 
     def render_card(link, btn_class, is_call=False):
         # Generate location tags HTML
@@ -141,46 +151,100 @@ def display_donations(donations):
         button_text = "Call Now" if is_call else "Donate Now"
 
         return f"""
-<div style="padding: 15px; margin: 10px 0; border-radius: 8px; background-color: var(--secondary-background-color)">
-    <div style="display: flex; justify-content: space-between; align-items: center">
-        <h5>{link['name']}</h5>
-        {'<span class="verified-badge">Verified</span>' if link['verified'] else '<span class="not-verified-badge">Verification Needed</span>'}
-    </div>
-    {locations_html}
-    <p style="color: var(--text-color); margin: 10px 0;">{link.get('description', '')}</p>
-    <a href="{link_action}" target="_blank">
-        <button class="donate-btn {btn_class}">{button_text}</button>
-    </a>
-</div>
-"""
+                <div style="padding: 15px; margin: 10px 0; border-radius: 8px; background-color: var(--secondary-background-color)">
+                    <div style="display: flex; justify-content: space-between; align-items: center">
+                        <h5>{link['name']}</h5>
+                        {'<span class="verified-badge">Verified</span>' if link['verified'] else '<span class="not-verified-badge">Verification Needed</span>'}
+                    </div>
+                    {locations_html}
+                    <p style="color: var(--text-color); margin: 10px 0;">{link.get('description', '')}</p>
+                    <a href="{link_action}" target="_blank">
+                        <button class="donate-btn {btn_class}">{button_text}</button>
+                    </a>
+                </div>
+                """
 
-    with tab1:
-        rescue_links = [
-            d for d in donations if d['category'].lower() == 'rescue']
-        for link in rescue_links:
-            st.markdown(render_card(link, "rescue-btn", is_call=True),
-                        unsafe_allow_html=True)
+    # with tab1:
+    #     rescue_links = [
+    #         d for d in donations if d['category'].lower() == 'volunteer']
+    #     for link in rescue_links:
+    #         st.markdown(render_card(link, "local-btn"),
+    #                     unsafe_allow_html=True)
 
+    # with tab2:
+    #     rescue_links = [
+    #         d for d in donations if d['category'].lower() == 'rescue']
+    #     for link in rescue_links:
+    #         st.markdown(render_card(link, "rescue-btn", is_call=True),
+    #                     unsafe_allow_html=True)
+
+    # with tab3:
+    #     intl_links = [d for d in donations if d['category'].lower()
+    #                   == 'machinery']
+    #     for link in intl_links:
+    #         st.markdown(render_card(link, "rescue-btn", is_call=True),
+    #                     unsafe_allow_html=True)
+
+    # with tab4:
+    #     local_links = [
+    #         d for d in donations if d['category'].lower() == 'local']
+    #     for link in local_links:
+    #         st.markdown(render_card(link, "international-btn"),
+    #                     unsafe_allow_html=True)
+
+    # with tab5:
+    #     intl_links = [d for d in donations if d['category'].lower()
+    #                   == 'international']
+    #     for link in intl_links:
+    #         st.markdown(render_card(link, "international-btn"),
+    #                     unsafe_allow_html=True)
+
+    def create_tab_content(tab, category, btn_style, is_call=False):
+        """Helper function to create tab content with filtering"""
+        filtered = [d for d in donations if d['category'].lower() == category]
+
+        # Get unique locations for this category
+        locations = sorted(
+            {loc for d in filtered for loc in d['locations'] if d['locations']})
+
+        # Add "All" option first
+        locations = ["All locations"] + locations
+
+        # Create dropdown
+        selected_loc = tab.selectbox(
+            f"တည်နေရာအလိုက် စစ်ထုတ်ပါ:",
+            locations,
+            key=f"loc_filter_{category}"
+        )
+
+        # Apply location filter
+        if selected_loc != "All locations":
+            filtered = [d for d in filtered if selected_loc in d['locations']]
+
+        # Display cards
+        for link in filtered:
+            tab.markdown(render_card(link, btn_style, is_call),
+                         unsafe_allow_html=True)
+
+    # Volunteer Tab
     with tab2:
-        intl_links = [d for d in donations if d['category'].lower()
-                      == 'machinery']
-        for link in intl_links:
-            st.markdown(render_card(link, "rescue-btn", is_call=True),
-                        unsafe_allow_html=True)
+        create_tab_content(tab2, 'volunteer', 'local-btn')
 
+    # Rescue Tab
+    with tab1:
+        create_tab_content(tab1, 'rescue', 'rescue-btn', is_call=True)
+
+    # Machinery Tab
     with tab3:
-        local_links = [
-            d for d in donations if d['category'].lower() == 'local']
-        for link in local_links:
-            st.markdown(render_card(link, "international-btn"),
-                        unsafe_allow_html=True)
+        create_tab_content(tab3, 'machinery', 'rescue-btn', is_call=True)
 
+    # Donations Tab
     with tab4:
-        intl_links = [d for d in donations if d['category'].lower()
-                      == 'international']
-        for link in intl_links:
-            st.markdown(render_card(link, "international-btn"),
-                        unsafe_allow_html=True)
+        create_tab_content(tab4, 'local', 'international-btn')
+
+    # # Free Service Tab
+    # with tab5:
+    #     create_tab_content(tab5, 'international', 'international-btn')
 
 
 def main(hightlightText):
