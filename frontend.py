@@ -221,16 +221,18 @@ def display_donations(donations):
 
 
 def main(hightlightText):
+    with st.sidebar:
+        st.write("this is a sidebar")
     scrolling_banner(hightlightText)
-    st.title("Myanmar Crisis Relief Dashboard")
+    st.title("Myanmar Crisis Information")
     crisis_data, donations = fetch_data()
 
-    if crisis_data:
-        display_metrics(crisis_data)
-        st.caption(
-            f"Last updated: {datetime.fromisoformat(crisis_data['last_updated_metrics']).strftime('%Y-%m-%d %H:%M')} UTC | Source: {crisis_data['source']}")
+    # if crisis_data:
+    #     display_metrics(crisis_data)
+    #     st.caption(
+    #         f"Last updated: {datetime.fromisoformat(crisis_data['last_updated_metrics']).strftime('%Y-%m-%d %H:%M')} UTC | Source: {crisis_data['source']}")
 
-    st.markdown("---")
+    # st.markdown("---")
 
     if donations:
         st.header("Trusted Rescuse Group Information & Donation Groups")
@@ -248,6 +250,9 @@ def main(hightlightText):
 
 if __name__ == "__main__":
     hightlightText = """
-            We’re updating the data as quickly as possible! Please be patient—our dedicated solo developer is working hard to make it happen. 🚀 Volunteer wanted!
+                မတ်လ ၂၈ ၊၂၀၂၅ မြန်မာနိုင်ငံ တွင် ဖြစ်ပွားခဲ့သော မတ်နီကျု ၇.၇ ငလျင်ဒဏ်ကြောင့် 
+                သေဆုံးသူ - ၁၆၄၄ ဦး၊ ဒဏ်ရာရသူ ၃၄၀၈ ဦးနှင့် ပျောက်ဆုံးသူ ၁၃၉ ဦး ရှိကြောင်း 
+                Myanmar Now မှ ၂၉ မတ်လ တွင် ထုတ်ပြန်ခဲ့သည်။ 
+                Last updated: 2025-03-29 20:00 UTC | Source: Myanmar Now
             """
     main(hightlightText)
