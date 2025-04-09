@@ -10,6 +10,7 @@ def create_news_table():
         id SERIAL PRIMARY KEY,
         news_source TEXT NOT NULL,
         article_title TEXT NOT NULL,
+        excerpt TEXT NOT NULL,
         text TEXT NOT NULL,
         url TEXT UNIQUE NOT NULL,
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
