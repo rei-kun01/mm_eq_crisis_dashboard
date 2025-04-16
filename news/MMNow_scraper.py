@@ -1,8 +1,7 @@
 # Scrape articles from Myanmar Now and save them to PostgresSQL
-
+import psycopg2
 import requests
 import json
-# import schedule
 from bs4 import BeautifulSoup
 from news.db_connection import get_db_connection, create_news_table
 
@@ -102,33 +101,42 @@ def scrape_article_text(url):
 
 # Insert data into the table
 def save_article(conn, news_source, title, excerpt, text, url, timestamp):
-    with conn.cursor() as cur:
-        # Check if article with the same title already exists
-        cur.execute("""
-        SELECT url, excerpt, timestamp, text
-        FROM news_articles
-        WHERE article_title = %s
-        """, (title,))
-        result = cur.fetchone()  # Fetch one row from the results
-        # If there’s no existing article with that title, `result` will be `None`.
+    try:
+        with conn.cursor() as cur:
+            # Check if article with the same URL already exists
+            cur.execute("""
+            SELECT url, excerpt, timestamp, text
+            FROM news_articles
+            WHERE url = %s
+            """, (url,))
+            result = cur.fetchone()  # Fetch one row from the results
+            # If there’s no existing article with that title, `result` will be `None`.
 
-        if result:
-            # Unpack the `result` tuple into four variables to compare them with the new scraped data
-            existing_url, existing_excerpt, existing_timestamp, existing_text = result
-            if (existing_url == url and
-            existing_excerpt == excerpt and
-            existing_timestamp == timestamp and
-            existing_text == text):
-                print("The scraped data already exists in the news_articles table in the database.")
-                return
+            if result:
+                # Unpack the `result` tuple into four variables to compare them with the new scraped data
+                existing_url, existing_excerpt, existing_timestamp, existing_text = result
+                if (existing_url == url and
+                existing_excerpt == excerpt and
+                existing_timestamp == timestamp and
+                existing_text == text):
+                    print("The scraped data already exists in the news_articles table in the database.")
+                    return
 
-        # If not the same (or no row exists), insert the new data
-        cur.execute("""
-            INSERT INTO news_articles (news_source, article_title, excerpt, text, url, timestamp)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """, (news_source, title, excerpt, text, url, timestamp))
+            # If not the same (or no row exists), insert the new data
+            cur.execute("""
+                INSERT INTO news_articles (news_source, article_title, excerpt, text, url, timestamp)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (news_source, title, excerpt, text, url, timestamp))
 
-        conn.commit()  # Commit the transaction
+            conn.commit()  # Commit the transaction
+
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        print(f"❌ Integrity error for {url}: {e}")
+
+    except Exception as e:
+        conn.rollback()
+        print(f"❌ Failed to process {url}: {e}")
 
 
 def main():
@@ -158,3 +166,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
