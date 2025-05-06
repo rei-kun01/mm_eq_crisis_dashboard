@@ -15,6 +15,7 @@ def create_news_table():
         url TEXT UNIQUE NOT NULL,
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         summary TEXT
+        "language" TEXT
     );
     """
     try:

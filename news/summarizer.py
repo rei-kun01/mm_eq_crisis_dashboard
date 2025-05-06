@@ -128,13 +128,13 @@ if __name__ == "__main__":
 
 
 # To preview results in the database:
-# conn = get_db_connection()
-# with conn.cursor() as cur:
-#     cur.execute("""
-#             SELECT *
-#             FROM news_articles
-#             """,)
-#     result = cur.fetchall()
-#
-# print(result[-1])
+conn = get_db_connection()
+with conn.cursor() as cur:
+    cur.execute("""
+            SELECT summary
+            FROM news_articles
+            """,)
+    result = cur.fetchall()
+
+print(result[-10:])
 
