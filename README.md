@@ -1,6 +1,6 @@
 # Myanmar Crisis Relief Dashboard
 
-[![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://mm-earthquake-crisis-dashboard.streamlit.app/)
+[![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://myanmar-earthquake-crisis-dashboard.streamlit.app/)
 
 A real-time crisis monitoring and relief coordination platform for Myanmar, providing:
 
