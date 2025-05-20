@@ -6,6 +6,10 @@ dashboard-backend
 #files
 .DS_Store
 data.csv
+eq_data.py
+badge_test.py
+test.ipynb
+test.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

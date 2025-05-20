@@ -221,8 +221,6 @@ def display_donations(donations):
 
 
 def main(hightlightText):
-    with st.sidebar:
-        st.write("this is a sidebar")
     scrolling_banner(hightlightText)
     st.title("Myanmar Crisis Information")
     crisis_data, donations = fetch_data()
