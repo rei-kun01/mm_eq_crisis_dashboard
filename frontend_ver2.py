@@ -268,7 +268,7 @@ def show_earthquake_page():
     rows = []
     for i, e in enumerate(events, start=1):
         pct = (i / total) * 100
-        status_text.text(f"getting earthquake data ({pct:0f}%)…")
+        status_text.text(f"getting earthquake data ({pct:.0f}%)…")
         p = e["properties"]
         place = get_place(p["lat"], p["lon"])
         rows.append({
